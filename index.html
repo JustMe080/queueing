@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="/css/root.css"> 
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Javascript functions -->
+    <script src="/js/load-login.js"></script>
+    <script src="/js/fetch.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/data.js"></script>
+    <script src="/js/filter.js"></script>
+    <script src="/js/action-buttons.js"></script>
+    <script src="/js/utils.js"></script>
+</head>
+<body>
+    <div id="modal-placeholder-login"></div>
+    <!-- This holds all the contents of the website. -->
+    <div class="content-wrapper">
+
+        <!-- This holds every section of the website -->
+        <div class="content-container">
+
+            <!-- The top section contains the statistical records of the table in the middle section and also the logo. -->
+            <div class="top-section f-row">
+
+                <!-- This table serve as the records for the available, ongoing, incoming, and for departing trucks. -->
+                
+
+                <!-- This contains the records for the containers -->
+                <div class="stats-card-container">
+                    <div class="cont-header f-row">
+                        <p class="card-label">Containers Report</p>
+                        <button class="add-container" onclick="fetchHtml1('page/modal/add-container.html', 'modal-placeholder')">Add Container</button>
+                    </div>
+                    <div class="f-row">
+                        <div class="card-info">
+                            <p class="card-label">INCOMING</p>
+                            <h6 class="large-text" id='container-incoming'>0</h6>     <!-- This data depends on the inputted containers -->
+                        </div>
+    
+                        <div class="card-info">
+                            <p class="card-label">ONGOING</p>
+                            <h6 class="large-text" id='container-ongoing'>0</h6>     <!-- This data depends on the inputted containers -->
+                        </div>
+
+                        <div class="card-info">
+                            <p class="card-label">COMPLETE</p>
+                            <h6 class="large-text" id='container-completed'>0</h6>     <!-- This data depends on the inputted containers -->
+                        </div>
+                    </div>
+                </div>
+
+                <table id="trk-sum" class="s-table">
+                    <thead>
+                        <tr>
+                            <!--* <td>Trucks <span><a href="" class="s-redirect-btn">view records</a></span></td> -->
+                            <td>Trucks</td>
+                            <td>Available</td>
+                            <td>Ongoing</td>
+                            <td>Incoming</td>
+                            <td>Departing</td>
+                        </tr>
+                    </thead>
+                    <tbody id="summary-table">
+                        
+                    </tbody>
+                </table>
+
+                <!-- This contains the records for the containers -->
+                <div class="stats-card-container">
+                    <div class="cont-header f-row">
+                        <p class="card-label">Workload Plans Report</p>
+                    </div>
+                    <div class="f-row">
+                        <div class="card-info">
+                            <p class="card-label">Assigned</p>
+                            <h6 class="large-text"  id='wlp-assigned'>0</h6>     <!-- This data depends on the inputted containers -->
+                        </div>
+    
+                        <div class="card-info">
+                            <p class="card-label">Remaining</p>
+                            <h6 class="large-text" id='wlp-remaining'>0</h6>     <!-- This data depends on the inputted containers -->
+                        </div>
+
+                        <div class="card-info">
+                            <p class="card-label">Complete</p>
+                            <h6 class="large-text" id='wlp-complete'>0</h6>     <!-- This data depends on the inputted containers -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="content-title-container f-row">
+                    <h1>NIKKA HIVESTOCK</h1>
+                </div> -->
+
+            </div>
+
+            <!-- The middle section contains all the table data such as the detailed information of the status of trucks and also the list of workload plans -->
+            <div class="middle-section f-row">
+
+                <!-- This large panel is where the table summary is in -->
+                <div class="large-panel">
+
+                    <!-- Filter section contains all the filtration in the main table -->
+                    <div class="filter-section f-row">
+
+                        <!-- This filters the vehicle type that will appear in the table -->
+                        <div>
+                            <p class="card-label">Vehicle Type</p>
+                            <div class="f-row" id="vehicle-type">
+                                <input type="radio" name="type" id="truck">      <!-- This is for the trucks-->
+                                <label for="truck">Truck</label>
+
+                                <input type="radio" name="type" id="container">  <!-- This is for the containers-->
+                                <label for="container">Container</label>
+                            </div>
+                        </div>
+                        <div id="stats-state">
+                            <p class="card-label" id="state-filter">Vehicle State</p>
+                            <div class="f-row" id="vehicle-state-filter">
+                                <input type="checkbox" name="idle" id="filter-idle">       <!-- Check this to appear the idle trucks-->
+                                <label for="filter-idle">Idle</label>
+
+                                <input type="checkbox" name="incoming" id="filter-incoming">   <!-- Check this to appear the Incoming trucks-->
+                                <label for="filter-incoming">Incoming</label>
+                                
+                                <input type="checkbox" name="Departing" id="filter-departing"> <!-- Check this to appear the deployment trucks-->
+                                <label for="filter-departing">Departing</label>
+
+                                <input type="checkbox" name="ongoing" id="filter-ongoing">    <!-- Check this to appear the ongoing trucks-->
+                                <label for="filter-ongoing">Ongoing</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-section">
+                        
+                        <table id="truck-table">
+                            <thead>
+                                <tr>
+                                    <td>Ref#</td>
+                                    <td>Vehicle No.</td>
+                                    <td>Vehicle Type</td>
+                                    <td>WLP</td>
+                                    <td>CBM</td>
+                                    <td>Task</td>
+                                    <td>Schedule</td>
+                                    <td>Destination</td>
+                                    <td>Status</td>
+                                    <td>Toggle</td>
+                                </tr>
+                            </thead>
+
+                            <tbody id="summary-tab" >
+                                <!-- TODO: Using the fetch it will populate the table. -->
+                                
+                            </tbody>
+                        </table>
+
+                        <table id="container-table">
+                            <thead>
+                                <tr>
+                                    <td>Ref#</td>
+                                    <td>Vehicle No.</td>
+                                    <td>Destination</td>
+                                    <td>Departure</td>
+                                    <td>Est. Arrival</td>
+                                    <td>Status</td>
+                                    <td>Toggle</td>
+                                </tr>
+                            </thead>
+
+                            <tbody id="summary-tab1" >
+                                <!-- TODO: Using the fetch it will populate the table. -->
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-toolbox">
+                        <button onclick="fetchHtml('page/modal/add-truck.html', 'modal-placeholder')">Add Truck</button>
+                    </div>
+
+                </div>
+
+                <!-- This small panel is for the Workload Plan container -->
+                <div class="small-panel wlp-container">
+                    <p class="card-label">Workload Plan</p>
+                    
+                    <div class="wlp-list">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>No.</td>
+                                    <td>Batch No.</td>
+                                    <td>CBM</td>
+                                    <td>Assign</td>
+                                </tr>
+                            </thead>
+                            <tbody id="wlp-ass">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="wlp-buttons">
+                        <button id="save-wlp" class="add-wlp" onclick="saveAssignedWlp()"><img src = "assets\img\save-logo.png" class = "save-button"></button>
+                        <button id="add-wlp" class="add-wlp" onclick="fetchHtml('page/modal/input-wlp.html', 'modal-placeholder')">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-placeholder"></div>
+</body>
+</html>
